@@ -3,7 +3,7 @@ import math
 
 class AirportAtlas():
 
-    atlas = {}
+    _atlas = {}
 
     def __init__(self, data):
 
@@ -14,13 +14,15 @@ class AirportAtlas():
 
         for line in f:
             line = line.split(",")
-            x = Airport(line[4], line[6], line[7], line[3], line[1])
-            self.atlas[line[4]] = x
+            # code, lat, long, country, name
+            if line[1] != "All Airports":
+                x = Airport(line[4], line[6], line[7], line[3], line[1])
+                self._atlas[line[4]] = x
 
 
     def getAirport(self, code):
 
-        return self.atlas[code]
+        return self._atlas[code]
 
     @staticmethod
     def greatCircledList(long1, long2, lat1, lat2):
@@ -61,17 +63,22 @@ class AirportAtlas():
 
         distance = self.getDistance(code1, code2)
 
-        airport1 = self.atlas[code1]
-        airport2 = self.atlas[code2]
+        airport1 = self._atlas[code1]
+
 
         country1 = airport1.country
-        country2 = airport2.country
+
+
+        print(country1)
 
         country1Currency = er._currencyInfo[country1]
-        country2Currency = er._currencyInfo[country2]
+
+        print(country1Currency)
 
         country1ER = er._exchangeRates[country1Currency]
-        country2ER = er._exchangeRates[country2Currency]
+
+
+
 
         airplane.check(distance)
 
